@@ -68,13 +68,19 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>C:\Libraries\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Libraries\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies>freeglut.lib;glew32.lib;DevIL.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -110,7 +116,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Circle.cpp" />
+    <ClCompile Include="Employee.cpp" />
+    <ClCompile Include="examen1.cpp" />
+    <ClCompile Include="InputFile.cpp" />
+    <ClCompile Include="Rectangle.cpp" />
+    <ClCompile Include="tarea1.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Circle.h" />
+    <ClInclude Include="Employee.h" />
+    <ClInclude Include="InputFile.h" />
+    <ClInclude Include="Rectangle.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Default.frag" />
+    <None Include="Default.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

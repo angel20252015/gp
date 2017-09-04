@@ -119,10 +119,10 @@ bool EsPrimo (int numero)
 	}
 	return primo;
 }
-int main()
+/**int main()
 {
 	PiramideEstrellas(4);
 	std::cout << EsPrimo(4);
 	getchar();
 	return 0;
-}
+}**/
