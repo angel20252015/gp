@@ -84,7 +84,7 @@ void Initialize() {//solo se llama una vez; crea toda la memoria que el prgrama 
 	/*--------------------------- V E R T E X  S H A D E R --------------------------------*/
 
 	//cargar el VERTEX SHADER	
-	ifile.Read("Default.vert");
+	ifile.Read("DiscardCenter.vert");
 	//guardar codigo fuente en un string 
 	std::string vertexSource = ifile.getContents();
 	//creacion de shader tipo vertex y guardamos su identificador en una variable
@@ -98,7 +98,7 @@ void Initialize() {//solo se llama una vez; crea toda la memoria que el prgrama 
 
 	/*--------------------------- F R A G M E N T  S H A D E R --------------------------------*/
 
-	ifile.Read("Default.frag");
+	ifile.Read("DiscardCenter.frag");
 	std::string fragmentSource = ifile.getContents();
 	GLuint fragmentShaderHandle = glCreateShader(GL_FRAGMENT_SHADER);
 	const GLchar *fragmentSource_c = (const GLchar*)fragmentSource.c_str();

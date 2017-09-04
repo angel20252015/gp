@@ -52,10 +52,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Default.frag">
+    <None Include="DiscardCenter.frag">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="Default.vert">
+    <None Include="DiscardCenter.vert">
       <Filter>Source Files\Shaders</Filter>
     </None>
   </ItemGroup>

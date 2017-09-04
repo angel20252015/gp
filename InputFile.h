@@ -1,9 +1,4 @@
 #pragma once
-
-
-
-#pragma once
-
 #include <string>
 
 class InputFile {
