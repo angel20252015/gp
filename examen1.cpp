@@ -19,16 +19,19 @@ void Initialize() {//solo se llama una vez; crea toda la memoria que el prgrama 
 	std::vector<glm::vec2> positions;
 	//claramente en el CPU y RAM , no tarjeta de video
 	//inserta un elemento al final de la lista
-	int angulo = 0;
+	int angulo = 18;
 	std::cout << "hola" << angulo << std::endl;
-	positions.push_back(glm::vec2(0.0f, 0.0f));
-	while (angulo <= 360) {
+	//positions.push_back(glm::vec2(0.0f, 0.0f));
+	while (angulo <= 390) {
 		std::cout << "angulo" << angulo << std::endl;
 		double radian = angulo*0.01745329252f;
 		double y = 1*sin(radian);
 		double x = 1*cos(radian);
+		double y2 = 0.5f * sin(radian);
+		double x2 = 0.5f * cos(radian);
 		positions.push_back(glm::vec2(x,y));
-		angulo = angulo + 1;
+		positions.push_back(glm::vec2(x2, y2));
+		angulo = angulo + 72;
 		std::cout << "angulo" << angulo << std::endl;
 
 	}
@@ -37,16 +40,17 @@ void Initialize() {//solo se llama una vez; crea toda la memoria que el prgrama 
 											 
 	std::vector<glm::vec3>colors;
 	//colors.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
-	float angulo2 = 0;
-	colors.push_back(glm::vec3(1.0, 1.0, 1.0));
+	float angulo2 = 18;
+	//colors.push_back(glm::vec3(1.0, 1.0, 1.0));
 
-	while (angulo2 <= 360) {
+	while (angulo2 <= 390) {
 		double radian = angulo2*0.01745329252f;
 		double y = 1 * sin(radian);
 		double x = 1 * cos(radian);
 		double z = 1 * cos(radian);
 		colors.push_back(glm::vec3(x,y,z));
-		angulo2 = angulo2 + 1;
+		colors.push_back(glm::vec3(x, y, z));
+		angulo2 = angulo2 + 72;
 	}
 
 	glGenVertexArrays(1, &vao);
@@ -129,7 +133,7 @@ void GameLoop() {	//Rendereando todo el semestre
 
 
 						   //glDrawArrays(GL_TRIANGLE_FAN, 0, 8);
-	glDrawArrays(GL_TRIANGLE_FAN, 0, 362);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 12);
 
 	//OpenGL viejito, solo para esta clase
 	//glBegin(GL_TRIANGLES);
