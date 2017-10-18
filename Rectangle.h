@@ -1,16 +1,23 @@
-#pragma once
-class Rectangle
-{
+#pragma once	
+#include <string>
+
+class Rectangle {	//declaracion de la clase Circle
 public:
+	//Constructores 
+
 	Rectangle();
 	Rectangle(float w, float h);
+	Rectangle(double r, std::string c);
+
 	float GetWidth();
-	void SetWidth(float w);
 	float GetHeight();
-	void SetHeight(float w);
 	float GetArea();
 	float GetPerimeter();
-private:
+
+	void SetWidth(float w);
+	void SetHeight(float h);
+
+private:		//variables
 	float _width;
 	float _height;
 };
