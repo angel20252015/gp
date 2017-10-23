@@ -93,7 +93,7 @@ void GameLoop()
 {
 	if (escala > 1 && !cambio) { escalar = escalar= escalar*-1 ; cambio = true; }
 	if (escala < 0.25 && cambio) { escalar = escalar = escalar*-1; cambio = false; }
-	escala = 0.001*escalar + escala;
+	escala = 0.0001*escalar + escala;
 	_transform2.SetScale(escala,escala,escala);
 	grados = grados + 0.01;
 	radianes = grados*0.0174533f;
@@ -106,6 +106,7 @@ void GameLoop()
 
 	//_transform.Rotate(0.0f, 0.01f, 0.0f, false);//a lo largo de los ejes locales
 	_transform2.Rotate(-0.01f, -0.01f, -0.01f, true);//a lo largo de los ejes globales
+	_transform.Rotate(0.01f, 0.01f, 0.01f, false);
 	
 
 	_shaderProgram.Activate();
