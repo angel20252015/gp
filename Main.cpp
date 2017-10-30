@@ -25,6 +25,7 @@ void Initialize()
 	// Lista de vec2
 	// Claramente en el CPU y RAM
 	std::vector<glm::vec3> positions;
+	std::vector<glm::vec3> normals;
 	std::vector<unsigned int> indices;
 
 	//adelante
@@ -32,8 +33,13 @@ void Initialize()
 	positions.push_back(glm::vec3(3.0f, 3.0f, 3.0f));
 	positions.push_back(glm::vec3(-3.0f, 3.0f, 3.0f));
 	positions.push_back(glm::vec3(3.0f, -3.0f, 3.0f));
+
 	//positions.push_back(glm::vec3(3.0f, 3.0f, 3.0f));
 	//positions.push_back(glm::vec3(-3.0f, -3.0f, 3.0f));
+	normals.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+	normals.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+	normals.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+	normals.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
 
 	indices.push_back(0);
 	indices.push_back(1);
@@ -49,6 +55,10 @@ void Initialize()
 	positions.push_back(glm::vec3(-3.0f, 3.0f, -3.0f));
 	//positions.push_back(glm::vec3(-3.0f, -3.0f, -3.0f));
 	//positions.push_back(glm::vec3(-3.0f, 3.0f, 3.0f));
+	normals.push_back(glm::vec3(-1.0f, 0.0f, 0.0f));
+	normals.push_back(glm::vec3(-1.0f, 0.0f, 0.0f));
+	normals.push_back(glm::vec3(-1.0f, 0.0f, 0.0f));
+	normals.push_back(glm::vec3(-1.0f, 0.0f, 0.0f));
 
 	indices.push_back(4);
 	indices.push_back(5);
@@ -65,6 +75,11 @@ void Initialize()
 	//positions.push_back(glm::vec3(3.0f, 3.0f, -3.0f));
 	positions.push_back(glm::vec3(3.0f, -3.0f, -3.0f));
 
+	normals.push_back(glm::vec3(0.0f, 0.0f, -1.0f));
+	normals.push_back(glm::vec3(0.0f, 0.0f, -1.0f));
+	normals.push_back(glm::vec3(0.0f, 0.0f, -1.0f));
+	normals.push_back(glm::vec3(0.0f, 0.0f, -1.0f));
+
 	indices.push_back(8);
 	indices.push_back(9);
 	indices.push_back(10);
@@ -79,6 +94,11 @@ void Initialize()
 	positions.push_back(glm::vec3(3.0f, 3.0f, -3.0f));
 	//positions.push_back(glm::vec3(3.0f, 3.0f, 3.0f));
 	//positions.push_back(glm::vec3(3.0f, -3.0f, -3.0f));
+
+	normals.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+	normals.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+	normals.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+	normals.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
 
 	indices.push_back(12);
 	indices.push_back(13);
@@ -95,6 +115,11 @@ void Initialize()
 	//positions.push_back(glm::vec3(-3.0f, 3.0f, 3.0f));
 	positions.push_back(glm::vec3(3.0f, 3.0f, 3.0f));
 
+	normals.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+	normals.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+	normals.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+	normals.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+
 	indices.push_back(16);
 	indices.push_back(17);
 	indices.push_back(18);
@@ -109,6 +134,11 @@ void Initialize()
 	//positions.push_back(glm::vec3(3.0f, -3.0f, -3.0f));
 	positions.push_back(glm::vec3(3.0f, -3.0f, 3.0f));
 	//positions.push_back(glm::vec3(-3.0f, -3.0f, 3.0f));
+
+	normals.push_back(glm::vec3(0.0f, -1.0f, 0.0f));
+	normals.push_back(glm::vec3(0.0f, -1.0f, 0.0f));
+	normals.push_back(glm::vec3(0.0f, -1.0f, 0.0f));
+	normals.push_back(glm::vec3(0.0f, -1.0f, 0.0f));
 
 
 	indices.push_back(20);
@@ -175,6 +205,7 @@ void Initialize()
 	_mesh.SetPositionAttribute(positions, GL_STATIC_DRAW, 0);
 	_mesh.SetColorAttribute(colors, GL_STATIC_DRAW, 1);
 	_mesh.SetIndices(indices, GL_STATIC_DRAW);
+	_mesh.SetNormalAttribute(normals, GL_STATIC_DRAW, 2);
 
 
 	_shaderProgram.CreateProgram();
@@ -182,6 +213,7 @@ void Initialize()
 	_shaderProgram.AttachShader("Default.frag", GL_FRAGMENT_SHADER);
 	_shaderProgram.SetAttribute(0, "VertexPosition");
 	_shaderProgram.SetAttribute(1, "VertexColor");
+	_shaderProgram.SetAttribute(2, "VertexNormal");
 	_shaderProgram.LinkProgram();
 	//_camera.SetOrthigraphic(4.0f,4.0f);
 	_camera.MoveForward(25.0f);
@@ -192,6 +224,7 @@ void Initialize()
 
 void GameLoop()
 {
+	
 	// Limpiamos el buffer de color y el buffer de profunidad.
 	// Siempre hacerlo al inicio del frame
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -203,6 +236,12 @@ void GameLoop()
 
 
 	_shaderProgram.Activate();
+	_shaderProgram.SetUniformf("pluzx",0);
+	_shaderProgram.SetUniformf("pluzy",5);
+	_shaderProgram.SetUniformf("pluzz",0);
+	_shaderProgram.SetUniformf("pcamarax", _camera.GetPosition()[0]);
+	_shaderProgram.SetUniformf("pcamaray", _camera.GetPosition()[1]);
+	_shaderProgram.SetUniformf("pcamaraz", _camera.GetPosition()[2]);
 	_shaderProgram.SetUniformMatrix("mvpMatrix", _camera.GetViewProjection() * _transform.GetModelMatrix());
 	_mesh.Draw(GL_TRIANGLES);
 	_shaderProgram.SetUniformMatrix("mvpMatrix", _camera.GetViewProjection() * _transform2.GetModelMatrix());

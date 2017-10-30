@@ -6,6 +6,7 @@ Mesh::Mesh(){
 	_vertexArrayObject = 0;
 	GLuint _positionsVertexBufferObject = 0;
 	GLuint _colorsVertexBufferObject = 0;
+	GLuint _normalsVertexBufferObject = 0;
 	GLint _vertexCount = 0;
 	_indicesBufferObject = 0;
 	GLint _indicesCount = 0;
@@ -37,6 +38,12 @@ void Mesh::Draw(GLenum primitive){
 void Mesh::SetPositionAttribute(std::vector<glm::vec3> positions, GLenum usage, GLuint locationIndex){
 	if (positions.size() > 0 && positions.size() == _vertexCount) {
 		SetAttributeData(_positionsVertexBufferObject, sizeof(glm::vec3) * positions.size(), positions.data(), usage, locationIndex, 3);
+	}
+}
+
+void Mesh::SetNormalAttribute(std::vector<glm::vec3> positions, GLenum usage, GLuint locationIndex) {
+	if (positions.size() > 0 && positions.size() == _vertexCount) {
+		SetAttributeData(_normalsVertexBufferObject, sizeof(glm::vec3) * positions.size(), positions.data(), usage, locationIndex, 3);
 	}
 }
 
