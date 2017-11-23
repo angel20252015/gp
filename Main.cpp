@@ -1,4 +1,9 @@
-
+/*********************************************
+Materia: Gráficas Computacionales
+Fecha: 20 de Octubre del 2017
+Autor: A01373179 Maria Fernanda Cruz Gonzalez
+A01373243 Jose Angel Prado Dupont
+**********************************************/
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <iostream>
@@ -8,38 +13,65 @@
 #include "ShaderProgram.h"
 #include "Transform.h"
 #include "Camera.h"
+#include "Texture2D.h"
+#include <IL/il.h>
 
 Mesh _mesh;
+Mesh _mesh2;
 ShaderProgram _shaderProgram;
 Transform _transform;
 Transform _transform2;
+Transform _ctransform1;
+Transform _ctransform2;
+Transform _ctransform3;
+Transform _ctransform4; 
+Transform _ctransform11;
+Transform _ctransform22;
+Transform _ctransform33;
+Transform _ctransform44;
 Camera _camera; //camera 3D
+Texture2D _texture;
+Texture2D _texture1;
+float rota = 0;
+float rotar = 0.01;
 
-
-void Initialize()
-{
+void Initialize() {
 
 	// Creando toda la memoria que el programa va a utilizar.
-
 	// Creación del atributo de posiciones de los vértices.
 	// Lista de vec2
 	// Claramente en el CPU y RAM
 	std::vector<glm::vec3> positions;
+	std::vector<glm::vec3> positions2;
 	std::vector<glm::vec3> normals;
 	std::vector<unsigned int> indices;
+	std::vector<glm::vec2> texturas;
+	_texture.LoadTexture("caja.jpg");
+	_texture1.LoadTexture("cuadros.jpg");
+
 
 	//adelante
-	positions.push_back(glm::vec3(-3.0f, -3.0f, 3.0f));
-	positions.push_back(glm::vec3(3.0f, 3.0f, 3.0f));
-	positions.push_back(glm::vec3(-3.0f, 3.0f, 3.0f));
-	positions.push_back(glm::vec3(3.0f, -3.0f, 3.0f));
+	positions.push_back(glm::vec3(-2.0f, -4.0f, 0.250f));
+	positions.push_back(glm::vec3(2.0f, 4.0f, 0.250f));
+	positions.push_back(glm::vec3(-2.0f, 4.0f, 0.250f));
+	positions.push_back(glm::vec3(2.0f, -4.0f, 0.250f));
+
+	positions2.push_back(glm::vec3(-0.50f, -1, 0.250f));
+	positions2.push_back(glm::vec3(0.50f, 1, 0.250f));
+	positions2.push_back(glm::vec3(-0.50f, 1, 0.250f));
+	positions2.push_back(glm::vec3(0.50f, -1, 0.250f));
 
 	//positions.push_back(glm::vec3(3.0f, 3.0f, 3.0f));
 	//positions.push_back(glm::vec3(-3.0f, -3.0f, 3.0f));
-	normals.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
-	normals.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
-	normals.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
-	normals.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+	normals.push_back(glm::vec3(0.0f, 0.0f, 1));
+	normals.push_back(glm::vec3(0.0f, 0.0f, 1));
+	normals.push_back(glm::vec3(0.0f, 0.0f, 1));
+	normals.push_back(glm::vec3(0.0f, 0.0f, 1));
+
+	texturas.push_back(glm::vec2(0.0f, 0.0f));
+	texturas.push_back(glm::vec2(1.0f, 1.0f));
+	texturas.push_back(glm::vec2(0.0f, 1.0f));
+	texturas.push_back(glm::vec2(1.0f, 0.0f));
 
 	indices.push_back(0);
 	indices.push_back(1);
@@ -49,16 +81,27 @@ void Initialize()
 	indices.push_back(0);
 
 	//izquierda
-	positions.push_back(glm::vec3(-3.0f, 3.0f, 3.0f));
-	positions.push_back(glm::vec3(-3.0f, -3.0f, -3.0f));
-	positions.push_back(glm::vec3(-3.0f, -3.0f, 3.0f));
-	positions.push_back(glm::vec3(-3.0f, 3.0f, -3.0f));
+	positions.push_back(glm::vec3(-2.0f, 4.0f, 0.250f));
+	positions.push_back(glm::vec3(-2.0f, -4.0f, -0.250f));
+	positions.push_back(glm::vec3(-2.0f, -4.0f, 0.250f));
+	positions.push_back(glm::vec3(-2.0f, 4.0f, -0.250f));
+
+	positions2.push_back(glm::vec3(-0.50f, 1, 0.250f));
+	positions2.push_back(glm::vec3(-0.50f, -1, -0.250f));
+	positions2.push_back(glm::vec3(-0.50f, -1, 0.250f));
+	positions2.push_back(glm::vec3(-0.50f, 1, -0.250f));
 	//positions.push_back(glm::vec3(-3.0f, -3.0f, -3.0f));
 	//positions.push_back(glm::vec3(-3.0f, 3.0f, 3.0f));
 	normals.push_back(glm::vec3(-1.0f, 0.0f, 0.0f));
 	normals.push_back(glm::vec3(-1.0f, 0.0f, 0.0f));
 	normals.push_back(glm::vec3(-1.0f, 0.0f, 0.0f));
 	normals.push_back(glm::vec3(-1.0f, 0.0f, 0.0f));
+
+
+	texturas.push_back(glm::vec2(0.0f, 0.0f));
+	texturas.push_back(glm::vec2(1.0f, 1.0f));
+	texturas.push_back(glm::vec2(0.0f, 1.0f));
+	texturas.push_back(glm::vec2(1.0f, 0.0f));
 
 	indices.push_back(4);
 	indices.push_back(5);
@@ -68,17 +111,30 @@ void Initialize()
 	indices.push_back(4);
 
 	//atras
-	positions.push_back(glm::vec3(-3.0f, 3.0f, -3.0f));
-	positions.push_back(glm::vec3(3.0f, 3.0f, -3.0f));
-	positions.push_back(glm::vec3(-3.0f, -3.0f, -3.0f));
+	positions.push_back(glm::vec3(-2.0f, 4.0f, -0.250f));
+	positions.push_back(glm::vec3(2.0f, 4.0f, -0.250f));
+	positions.push_back(glm::vec3(-2.0f, -4.0f, -0.250f));
 	//positions.push_back(glm::vec3(-3.0f, -3.0f, -3.0f));
 	//positions.push_back(glm::vec3(3.0f, 3.0f, -3.0f));
-	positions.push_back(glm::vec3(3.0f, -3.0f, -3.0f));
+	positions.push_back(glm::vec3(2.0f, -4.0f, -0.250f));
+
+	positions2.push_back(glm::vec3(-0.5f, 1.0f, -0.250f));
+	positions2.push_back(glm::vec3(0.50f, 1, -0.250f));
+	positions2.push_back(glm::vec3(-0.5f, -1, -0.250f));
+	//positions.push_back(glm::vec3(-3.0f, -3.0f, -3.0f));
+	//positions.push_back(glm::vec3(3.0f, 3.0f, -3.0f));
+	positions2.push_back(glm::vec3(0.50f, -1, -0.250f));
 
 	normals.push_back(glm::vec3(0.0f, 0.0f, -1.0f));
 	normals.push_back(glm::vec3(0.0f, 0.0f, -1.0f));
 	normals.push_back(glm::vec3(0.0f, 0.0f, -1.0f));
 	normals.push_back(glm::vec3(0.0f, 0.0f, -1.0f));
+
+
+	texturas.push_back(glm::vec2(0.0f, 0.0f));
+	texturas.push_back(glm::vec2(1.0f, 0.0f));
+	texturas.push_back(glm::vec2(0.0f, 1.0f));
+	texturas.push_back(glm::vec2(1.0f, 1.0f));
 
 	indices.push_back(8);
 	indices.push_back(9);
@@ -88,17 +144,27 @@ void Initialize()
 	indices.push_back(11);
 
 	//derecha
-	positions.push_back(glm::vec3(3.0f, -3.0f, -3.0f));
-	positions.push_back(glm::vec3(3.0f, 3.0f, 3.0f));
-	positions.push_back(glm::vec3(3.0f, -3.0f, 3.0f));
-	positions.push_back(glm::vec3(3.0f, 3.0f, -3.0f));
+	positions.push_back(glm::vec3(2.0f, -4.0f, -0.250f));
+	positions.push_back(glm::vec3(2.0f, 4.0f, 0.250f));
+	positions.push_back(glm::vec3(2.0f, -4.0f, 0.250f));
+	positions.push_back(glm::vec3(2.0f, 4.0f, -0.250f));
 	//positions.push_back(glm::vec3(3.0f, 3.0f, 3.0f));
 	//positions.push_back(glm::vec3(3.0f, -3.0f, -3.0f));
+
+	positions2.push_back(glm::vec3(0.50f, -1, -0.250f));
+	positions2.push_back(glm::vec3(0.50f, 1, 0.250f));
+	positions2.push_back(glm::vec3(0.50f, -1, 0.250f));
+	positions2.push_back(glm::vec3(0.5f, 1, -0.250f));
 
 	normals.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
 	normals.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
 	normals.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
 	normals.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+
+	texturas.push_back(glm::vec2(0.0f, 0.0f));
+	texturas.push_back(glm::vec2(1.0f, 1.0f));
+	texturas.push_back(glm::vec2(0.0f, 1.0f));
+	texturas.push_back(glm::vec2(1.0f, 0.0f));
 
 	indices.push_back(12);
 	indices.push_back(13);
@@ -108,17 +174,29 @@ void Initialize()
 	indices.push_back(12);
 
 	//Arriba
-	positions.push_back(glm::vec3(-3.0f, 3.0f, -3.0f));
-	positions.push_back(glm::vec3(-3.0f, 3.0f, 3.0f));
-	positions.push_back(glm::vec3(3.0f, 3.0f, -3.0f));
+	positions.push_back(glm::vec3(-2.0f, 4.0f, -0.250f));
+	positions.push_back(glm::vec3(-2.0f, 4.0f, 0.250f));
+	positions.push_back(glm::vec3(2.0f, 4.0f, -0.250f));
 	//positions.push_back(glm::vec3(3.0f, 3.0f, -3.0f));
 	//positions.push_back(glm::vec3(-3.0f, 3.0f, 3.0f));
-	positions.push_back(glm::vec3(3.0f, 3.0f, 3.0f));
+	positions.push_back(glm::vec3(2.0f, 4.0f, 0.50f));
+
+	positions2.push_back(glm::vec3(-0.50f, 1, -0.250f));
+	positions2.push_back(glm::vec3(-0.50f, 1, 0.250f));
+	positions2.push_back(glm::vec3(0.50f, 1, -0.250f));
+	//positions.push_back(glm::vec3(3.0f, 3.0f, -3.0f));
+	//positions.push_back(glm::vec3(-3.0f, 3.0f, 3.0f));
+	positions2.push_back(glm::vec3(0.50f, 1, 0.250f));
 
 	normals.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
 	normals.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
 	normals.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
 	normals.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+
+	texturas.push_back(glm::vec2(0.0f, 0.0f));
+	texturas.push_back(glm::vec2(1.0f, 0.0f));
+	texturas.push_back(glm::vec2(0.0f, 1.0f));
+	texturas.push_back(glm::vec2(1.0f, 1.0f));
 
 	indices.push_back(16);
 	indices.push_back(17);
@@ -128,11 +206,18 @@ void Initialize()
 	indices.push_back(19);
 
 	//abajo
-	positions.push_back(glm::vec3(-3.0f, -3.0f, 3.0f));
-	positions.push_back(glm::vec3(-3.0f, -3.0f, -3.0f));
-	positions.push_back(glm::vec3(3.0f, -3.0f, -3.0f));
+	positions.push_back(glm::vec3(-2.0f, -4.0f, 0.250f));
+	positions.push_back(glm::vec3(-2.0f, -4.0f, -0.250f));
+	positions.push_back(glm::vec3(2.0f, -4.0f, -0.250f));
 	//positions.push_back(glm::vec3(3.0f, -3.0f, -3.0f));
-	positions.push_back(glm::vec3(3.0f, -3.0f, 3.0f));
+	positions.push_back(glm::vec3(2.0f, -4.0f, 0.250f));
+	//positions.push_back(glm::vec3(-3.0f, -3.0f, 3.0f));
+
+	positions2.push_back(glm::vec3(-0.50f, -1, 0.250f));
+	positions2.push_back(glm::vec3(-0.50f, -1, -0.250f));
+	positions2.push_back(glm::vec3(0.50f, -1, -0.250f));
+	//positions.push_back(glm::vec3(3.0f, -3.0f, -3.0f));
+	positions2.push_back(glm::vec3(0.50f, -1, 0.250f));
 	//positions.push_back(glm::vec3(-3.0f, -3.0f, 3.0f));
 
 	normals.push_back(glm::vec3(0.0f, -1.0f, 0.0f));
@@ -140,6 +225,10 @@ void Initialize()
 	normals.push_back(glm::vec3(0.0f, -1.0f, 0.0f));
 	normals.push_back(glm::vec3(0.0f, -1.0f, 0.0f));
 
+	texturas.push_back(glm::vec2(0.0f, 0.0f));
+	texturas.push_back(glm::vec2(0.0f, 1.0f));
+	texturas.push_back(glm::vec2(1.0f, 1.0f));
+	texturas.push_back(glm::vec2(1.0f, 0.0f));
 
 	indices.push_back(20);
 	indices.push_back(21);
@@ -151,54 +240,8 @@ void Initialize()
 
 	// Arreglo de colores en el cpu
 	std::vector<glm::vec3> colors;
-	colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-	colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-	colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-	colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
 	//colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
 	//colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-
-	colors.push_back(glm::vec3(1.0f, 1.0f, 0.0f));
-	colors.push_back(glm::vec3(1.0f, 1.0f, 0.0f));
-	colors.push_back(glm::vec3(1.0f, 1.0f, 0.0f));
-	colors.push_back(glm::vec3(1.0f, 1.0f, 0.0f));
-	//colors.push_back(glm::vec3(1.0f, 1.0f, 0.0f));
-	//colors.push_back(glm::vec3(1.0f, 1.0f, 0.0f));
-
-	colors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-	colors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-	colors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-	colors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-	//colors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-	//colors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-
-	colors.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
-	colors.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
-	colors.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
-	colors.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
-	//colors.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
-	//colors.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
-
-	colors.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
-	colors.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
-	colors.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
-	colors.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
-	//colors.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
-	//colors.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
-
-	colors.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
-	colors.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
-	colors.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
-	colors.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
-	//colors.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
-	//colors.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
-
-	/*colors.push_back(glm::vec3(1.0f, 1.0f, 0.0f));
-	colors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-	colors.push_back(glm::vec3(1.0f, 0.0f, 1.0f));
-	colors.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
-	colors.push_back(glm::vec3(0.0f, 1.0f, 1.0f));
-	colors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));*/
 
 	_mesh.SetIndices(indices, GL_STATIC_DRAW);
 	_mesh.CreateMesh(24);
@@ -206,7 +249,15 @@ void Initialize()
 	_mesh.SetColorAttribute(colors, GL_STATIC_DRAW, 1);
 	_mesh.SetIndices(indices, GL_STATIC_DRAW);
 	_mesh.SetNormalAttribute(normals, GL_STATIC_DRAW, 2);
+	_mesh.SetTexCoordAttribute(texturas, GL_STATIC_DRAW, 3);
 
+	_mesh2.SetIndices(indices, GL_STATIC_DRAW);
+	_mesh2.CreateMesh(24);
+	_mesh2.SetPositionAttribute(positions2, GL_STATIC_DRAW, 0);
+	_mesh2.SetColorAttribute(colors, GL_STATIC_DRAW, 1);
+	_mesh2.SetIndices(indices, GL_STATIC_DRAW);
+	_mesh2.SetNormalAttribute(normals, GL_STATIC_DRAW, 2);
+	_mesh2.SetTexCoordAttribute(texturas, GL_STATIC_DRAW, 3);
 
 	_shaderProgram.CreateProgram();
 	_shaderProgram.AttachShader("Default.vert", GL_VERTEX_SHADER);
@@ -214,17 +265,46 @@ void Initialize()
 	_shaderProgram.SetAttribute(0, "VertexPosition");
 	_shaderProgram.SetAttribute(1, "VertexColor");
 	_shaderProgram.SetAttribute(2, "VertexNormal");
+	_shaderProgram.SetAttribute(3, "VertexTexCoord");
+
 	_shaderProgram.LinkProgram();
 	//_camera.SetOrthigraphic(4.0f,4.0f);
 	_camera.MoveForward(25.0f);
-	_transform2.SetScale(10, 0.5f, 10);
-	_transform2.MoveUp(-10,true);
+	_camera.SetRotation(-30,0,0);
+	_camera.MoveUp(10);
+	_transform.MoveUp(-5, true);
+	_transform2.SetScale(150, 0.5, 150);
+	_transform2.MoveUp(-10, true);
+	_ctransform1.MoveUp(5.3f, true);
+	_ctransform1.MoveRight(-1.7,true);
+	_ctransform2.MoveUp(5.3f, true);
+	//_ctransform2.MoveRight(-1.8, true);
+	_ctransform3.MoveUp(5.3f, true);
+	_ctransform3.MoveRight(1.7, true);
+	_ctransform4.MoveUp(-2.3f, true);
+	_ctransform4.MoveRight(-3.1f, true);
+	_ctransform4.Rotate(0,0,80, true);
+
+	_ctransform11.MoveUp(2.3f, true);
+	//_ctransform11.MoveRight(-1.8, true);
+	_ctransform22.MoveUp(2.3f, true);
+	//_ctransform2.MoveRight(-1.8, true);
+	_ctransform33.MoveUp(2.3f, true);
+	//_ctransform33.MoveRight(1.8, true);
+	//_ctransform44.MoveUp(-2.3f, true);
+	_ctransform44.MoveUp(2.3f, true);
+	//_ctransform44.Rotate(0, 0, 80, true);
+	//_ctransform1.SetScale(0.3334f, 0.5f, 0.1f);
+	//_transform.SetScale(1, 1.5f, 0.1f);
 	//_transform.SetRotation(0.0f,0.0f, 90.0f);
+	/**/
+	_transform.Rotate(-60.0f, 0.00f, 0.0f, true);
+	rota = 0;
+	rotar = 0.01;
 }
 
-void GameLoop()
-{
-	
+void GameLoop() {
+
 	// Limpiamos el buffer de color y el buffer de profunidad.
 	// Siempre hacerlo al inicio del frame
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -232,28 +312,75 @@ void GameLoop()
 	//_camera.MoveForward(-0.0001f);
 
 	//_transform.Rotate(0.0f, 0.01f, 0.0f, false);//a lo largo de los ejes locales
-	_transform.Rotate(0.01f, 0.01f, 0.01f, true);//a lo largo de los ejes globales
+	_transform.Rotate(0.0f, 0.01f, 0.0f, true);//a lo largo de los ejes globales
+	if (rota >= 120 || rota<0) {
+		rotar = rotar*-1;
+	}
+	rota = rota + rotar;
+	_ctransform1.MoveForward(rotar/50,false);
+	_ctransform1.Rotate(rotar, 0, 0.0f, false);
+	_ctransform2.MoveForward(rotar*0.9 / 50, false);
+	_ctransform2.Rotate(rotar*0.9, 0, 0.0f, false);
+	_ctransform3.MoveForward(rotar*0.7 / 50, false);
+	_ctransform3.Rotate(rotar*0.7, 0, 0.0f, false);
+	_ctransform4.MoveForward(rotar*0.8 / 50, false);
+	_ctransform4.Rotate(rotar*0.8, 0, 0.0f, false);
 
-
+	_ctransform11.MoveForward(rotar / 50, false);
+	_ctransform11.Rotate(rotar, 0, 0.0f, false);
+	_ctransform22.MoveForward(rotar*0.9 / 50, false);
+	_ctransform22.Rotate(rotar*0.9, 0, 0.0f, false);
+	_ctransform33.MoveForward(rotar*0.7 / 50, false);
+	_ctransform33.Rotate(rotar*0.7, 0, 0.0f, false);
+	_ctransform44.MoveForward(rotar*0.8 / 50, false);
+	_ctransform44.Rotate(rotar*0.8, 0, 0.0f, false);
 	_shaderProgram.Activate();
-	_shaderProgram.SetUniformf("pluzx",0);
-	_shaderProgram.SetUniformf("pluzy",5);
-	_shaderProgram.SetUniformf("pluzz",0);
+	_shaderProgram.SetUniformf("pluzx", 0);
+	_shaderProgram.SetUniformf("pluzy", 5);
+	_shaderProgram.SetUniformf("pluzz", 0);
 	_shaderProgram.SetUniformf("pcamarax", _camera.GetPosition()[0]);
 	_shaderProgram.SetUniformf("pcamaray", _camera.GetPosition()[1]);
 	_shaderProgram.SetUniformf("pcamaraz", _camera.GetPosition()[2]);
+	_shaderProgram.SetUniformi("DiffuseTexture", 0);
+
 	_shaderProgram.SetUniformMatrix("mvpMatrix", _camera.GetViewProjection() * _transform.GetModelMatrix());
+	glActiveTexture(GL_TEXTURE0);
+	_texture.Bind();
 	_mesh.Draw(GL_TRIANGLES);
+	glActiveTexture(GL_TEXTURE0);
+	_shaderProgram.SetUniformMatrix("mvpMatrix", _camera.GetViewProjection() * _transform.GetModelMatrix()*_ctransform1.GetModelMatrix());
+	_mesh2.Draw(GL_TRIANGLES);
+	_shaderProgram.SetUniformMatrix("mvpMatrix", _camera.GetViewProjection() * _transform.GetModelMatrix()*_ctransform2.GetModelMatrix());
+	_mesh2.Draw(GL_TRIANGLES);
+	_shaderProgram.SetUniformMatrix("mvpMatrix", _camera.GetViewProjection() * _transform.GetModelMatrix()*_ctransform3.GetModelMatrix());
+	_mesh2.Draw(GL_TRIANGLES);
+	_shaderProgram.SetUniformMatrix("mvpMatrix", _camera.GetViewProjection() * _transform.GetModelMatrix()*_ctransform4.GetModelMatrix());
+	_mesh2.Draw(GL_TRIANGLES);
+
+	_shaderProgram.SetUniformMatrix("mvpMatrix", _camera.GetViewProjection() * _transform.GetModelMatrix()*_ctransform1.GetModelMatrix()*_ctransform11.GetModelMatrix());
+	_mesh2.Draw(GL_TRIANGLES);
+	_shaderProgram.SetUniformMatrix("mvpMatrix", _camera.GetViewProjection() * _transform.GetModelMatrix()*_ctransform2.GetModelMatrix()*_ctransform22.GetModelMatrix());
+	_mesh2.Draw(GL_TRIANGLES);
+	_shaderProgram.SetUniformMatrix("mvpMatrix", _camera.GetViewProjection() * _transform.GetModelMatrix()*_ctransform3.GetModelMatrix()*_ctransform33.GetModelMatrix());
+	_mesh2.Draw(GL_TRIANGLES);
+	_shaderProgram.SetUniformMatrix("mvpMatrix", _camera.GetViewProjection() * _transform.GetModelMatrix()*_ctransform4.GetModelMatrix()*_ctransform44.GetModelMatrix());
+	_mesh2.Draw(GL_TRIANGLES);
+
+	_texture.Unbind();
+
 	_shaderProgram.SetUniformMatrix("mvpMatrix", _camera.GetViewProjection() * _transform2.GetModelMatrix());
+	glActiveTexture(GL_TEXTURE0);
+	_texture1.Bind();
 	_mesh.Draw(GL_TRIANGLES);
+	glActiveTexture(GL_TEXTURE0);
+	_texture1.Unbind();
 	_shaderProgram.Deactivate();
 
 	// Cuando terminamos de renderear, cambiamos los buffers.
 	glutSwapBuffers();
 }
 
-void Idle()
-{
+void Idle() {
 	// Cuando OpenGL entra en modo de reposo 
 	// (para guardar bateria, por ejemplo)
 	// le decimos que vuelva a dibujar ->
@@ -261,13 +388,11 @@ void Idle()
 	glutPostRedisplay();
 }
 
-void ReshapeWindow(int width, int height)
-{
+void ReshapeWindow(int width, int height) {
 	glViewport(0, 0, width, height);
 }
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]) {
 	// Inicializar freeglut
 	// Freeglut se encarga de crear una ventana
 	// en donde podemos dibujar
@@ -304,6 +429,10 @@ int main(int argc, char* argv[])
 	// Inicializar GLEW. Esta librería se encarga de obtener el API de OpenGL de
 	// nuestra tarjeta de video. SHAME ON YOU MICROSOFT.
 	glewInit();
+	ilInit();
+	ilEnable(IL_ORIGIN_SET);
+	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
+
 
 	// Configurar OpenGL. Este es el color por default del buffer de color
 	// en el framebuffer.
