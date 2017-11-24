@@ -7,17 +7,21 @@ in vec2 VertexTexCoord;
 
 out vec3 InterpolatedColor;
 out vec3 pposition;
-out mat3 NormalMatrix;
 out vec3 normal;
-out vec2 InterpolatedTexCoord;
+out vec2 InterpolatedTexCoord;    
+out vec4 PixelPositionLightSpace;
+out mat3 NormalMatrix;
 
 uniform mat4 mvpMatrix;
+uniform mat4 LightVPMatrix;
+uniform mat4 ModelMatrix;
 
 void main(){
-	NormalMatrix = transpose(inverse(mat3(mvpMatrix)));
-	pposition = vec3(mvpMatrix * vec4(VertexPosition, 1.0f));
+	mat3 NormalMatrix = transpose(inverse(mat3(ModelMatrix)));
+	pposition = vec3(ModelMatrix * vec4(VertexPosition, 1.0f));
+	PixelPositionLightSpace = LightVPMatrix * vec4(pposition, 1.0);
 	InterpolatedColor = VertexColor;
 	gl_Position = mvpMatrix * vec4(VertexPosition, 1.0f);
-	normal = VertexNormal;
-	InterpolatedTexCoord = VertexTexCoord;
+	normal = NormalMatrix*VertexNormal;
+	InterpolatedTexCoord = VertexTexCoord;		
 }

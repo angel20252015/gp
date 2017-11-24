@@ -1,3 +1,9 @@
+/*********************************************
+Materia: Gráficas Computacionales
+Fecha: 24 de Noviembre del 2017
+Autor: A01373179 Maria Fernanda Cruz Gonzalez
+A01373243 Jose Angel Prado Dupont
+**********************************************/
 #include "Camera.h"
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -6,43 +12,43 @@ Camera::Camera() {
 	_viewMatrix = glm::inverse(_transform.GetModelMatrix());
 }
 
-glm::mat4 Camera::GetViewProjection(){
+glm::mat4 Camera::GetViewProjection() {
 	return _projectionMatrix * _viewMatrix;
 }
 
-glm::mat4 Camera::GetViewMatrix(){
+glm::mat4 Camera::GetViewMatrix() {
 	return _viewMatrix;
 }
 
-glm::mat4 Camera::GetProjectionMatrix(){
+glm::mat4 Camera::GetProjectionMatrix() {
 	return _projectionMatrix;
 }
 
-glm::vec3 Camera::GetPosition(){
+glm::vec3 Camera::GetPosition() {
 	return _transform.GetPosition();
 }
 
-void Camera::SetPosition(float x, float y, float z){
-	_transform.SetPosition(x,y,z);
+void Camera::SetPosition(float x, float y, float z) {
+	_transform.SetPosition(x, y, z);
 	_viewMatrix = glm::inverse(_transform.GetModelMatrix());
 }
 
-void Camera::SetRotation(float x, float y, float z){
+void Camera::SetRotation(float x, float y, float z) {
 	_transform.SetRotation(x, y, z);
 	_viewMatrix = glm::inverse(_transform.GetModelMatrix());
 }
 
-void Camera::MoveForward(float delta, bool world){
+void Camera::MoveForward(float delta, bool world) {
 	_transform.MoveForward(delta, world);
 	_viewMatrix = glm::inverse(_transform.GetModelMatrix());
 }
 
-void Camera::MoveUp(float delta, bool world){
+void Camera::MoveUp(float delta, bool world) {
 	_transform.MoveUp(delta, world);
 	_viewMatrix = glm::inverse(_transform.GetModelMatrix());
 }
 
-void Camera::MoveRight(float delta, bool world){
+void Camera::MoveRight(float delta, bool world) {
 	_transform.MoveRight(delta, world);
 	_viewMatrix = glm::inverse(_transform.GetModelMatrix());
 }
@@ -53,7 +59,7 @@ void Camera::Yaw(float degrees) {
 }
 
 void Camera::Roll(float degrees) {
-	_transform.Rotate(0.0f, 0.0f,degrees, false);
+	_transform.Rotate(0.0f, 0.0f, degrees, false);
 	_viewMatrix = glm::inverse(_transform.GetModelMatrix());
 }
 
@@ -63,7 +69,7 @@ void Camera::Pitch(float degrees) {
 }
 
 void Camera::Rotate(float x, float y, float z, bool world) {
-	_transform.Rotate(x,y,z, world);
+	_transform.Rotate(x, y, z, world);
 	_viewMatrix = glm::inverse(_transform.GetModelMatrix());
 }
 

@@ -1,7 +1,12 @@
+/*********************************************
+Materia: Gráficas Computacionales
+Fecha: 24 de Noviembre del 2017
+Autor: A01373179 Maria Fernanda Cruz Gonzalez
+A01373243 Jose Angel Prado Dupont
+**********************************************/
 #include "Transform.h"
 
-Transform::Transform()
-{
+Transform::Transform() {
 	_position = glm::vec3(0.0f, 0.0f, 0.0f);
 	_rotation = glm::quat(glm::vec3(0.0f, 0.0f, 0.0f));
 	_scale = glm::vec3(1.0f, 1.0f, 1.0f);
@@ -13,24 +18,24 @@ Transform::Transform()
 	_right = WORLD_RIGHT_VECTOR;
 }
 
-glm::mat4 Transform::GetModelMatrix(){
+glm::mat4 Transform::GetModelMatrix() {
 	return _modelMatrix;
 }
 
-glm::vec3 Transform::GetPosition(){
+glm::vec3 Transform::GetPosition() {
 	return _position;
 }
 
-glm::quat Transform::GetRotation(){
+glm::quat Transform::GetRotation() {
 	return _rotation;
 }
 
-glm::vec3 Transform::GetScale(){
+glm::vec3 Transform::GetScale() {
 	return _scale;
 }
 
 void Transform::SetPosition(float x, float y, float z) {
-	_position = glm::vec3(x,y,z);
+	_position = glm::vec3(x, y, z);
 	UpdateModelMatrixPosition();
 }
 void Transform::SetRotation(float x, float y, float z) {
@@ -39,13 +44,13 @@ void Transform::SetRotation(float x, float y, float z) {
 }
 
 void Transform::SetScale(float x, float y, float z) {
-	_scale = glm::vec3(x,y,z);
+	_scale = glm::vec3(x, y, z);
 	UpdateModelMatrixRotationScale();
 }
 
 void Transform::Translate(float x, float y, float z, bool world) {
 	if (world)
-		_position += glm::vec3(x,y,z);
+		_position += glm::vec3(x, y, z);
 	else {
 		_position += _forward * z;
 		_position += _up * y;
@@ -69,7 +74,7 @@ void Transform::MoveUp(float delta, bool world) {
 
 	UpdateModelMatrixPosition();
 }
-void Transform::MoveRight(float delta, bool world){
+void Transform::MoveRight(float delta, bool world) {
 	if (world)
 		_position += WORLD_RIGHT_VECTOR * delta;
 	else
